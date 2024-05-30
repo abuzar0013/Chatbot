@@ -1,19 +1,17 @@
-import os
-from dotenv import load_dotenv
-
 import streamlit as st
 import google.generativeai as genai
 from google.generativeai.types import HarmCategory, HarmBlockThreshold
 
 
 
-
-# .env file load karen
-load_dotenv()
+GOOGLE_API_KEY = st.text_input("Entre your Gemini API Key \n\n",)
 
 # Environment variables ko access karen
-genai.configure(api_key = os.getenv('GOOGLE_API_KEY'))
-
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
+    st.success("API Key configured successfully")
+else:
+    st.warning("Please enter your Gemini API Key")
 
 @st.cache_resource
 def load_models():
@@ -75,7 +73,7 @@ def get_gemini_pro_vision_response(
 
 
 
-st.header("Vertex AI Gemini 1.0 API", divider="rainbow")
+st.header("Chatbot Using gemini API", divider="rainbow")
 text_model_pro, multimodal_model_pro = load_models()
 
 
@@ -145,7 +143,7 @@ with tab1:
     character_persona: {character_persona} \n
     character_location: {character_location} \n
     story_premise: {",".join(story_premise)} \n
-    write this story in hinglish language make sure language is hindi but text must be in english. ex:- to chlo hum aaj sunenge ek bhot acchi story.
+    Write this story in Hinglish language (use Hindi language but English script). Example: "to chlo hum aaj sunenge ek bhot acchi story."
     """
     config = {
         "temperature": 0.8,
